@@ -1,11 +1,14 @@
 const Discord = require('discord.js')
+const { QuickDB } = require('quick.db');
+const db = new QuickDB();
+const config = require('../config.json')
+const color = config.color
 
 module.exports = {
 
     name: "ping",
     description: "montre la latence",
     permission: "Aucune",
-    category: "acceuil",
     dm: true,
 
     async run(bot, interaction) {
@@ -13,14 +16,14 @@ module.exports = {
         try {
 
             const embed = new Discord.EmbedBuilder()
-                .setColor('Yellow')
+                .setColor(color)
                 .addFields({ name: 'BOT', value: `${Date.now() - interaction.createdTimestamp}ms.`, inline: true})
                 .addFields({ name: "API", value: `${Date.now() - interaction.createdTimestamp}ms`, inline: true})
 
             await interaction.reply({ embeds: [embed]});
         } catch (error) {
-            console.log(`❌ une erreur c'est produite sur la commande ping`, error)
-            return interaction.reply({content: '❌ Une erreur c\'est produite', ephemeral: true})        
+            console.log(`❌ une erreur s'est produite sur la commande ping`, error)
+            return interaction.reply({content: '❌ Une erreur s\'est produite produite', ephemeral: true})        
         }
     }
 }

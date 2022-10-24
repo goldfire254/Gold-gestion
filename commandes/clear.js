@@ -1,5 +1,8 @@
-
 const Discord = require('discord.js')
+const { QuickDB } = require('quick.db');
+const db = new QuickDB();
+const config = require('../config.json')
+const color = config.color
 
 module.exports = {
 
@@ -17,31 +20,29 @@ module.exports = {
         }
     ],
 
-    async run(bot, interaction, message, args) {
+    async run(bot, interaction) {
 
         if(!interaction.member.permissions.has(Discord.PermissionsBitField.resolve("Administrator"))) return interaction.reply("vous n'avez pas les permissions d'effectuer la commandes");
         if(!interaction.guild.members.me.permissions.has(Discord.PermissionsBitField.resolve("Administrator"))) return interaction.reply("vous n'avez pas les permissions d'effectuer la commandes");
        
         try {
 
-            let amount = interaction.options.getNumber("nombre");
-            let phrase = interaction.options.getString("phrase");
-
-            if(isNaN(amount)) return interaction.reply(`veuillez mettre des chiffres`)
+            const amount = interaction.options.getNumber("nombre");
+            const phrase = interaction.options.getString("phrase");
+            const embed = new Discord.EmbedBuilder()
+                .setColor(color)
+                .setDescription(`✅ ${amount} messages ont été supprimé avec succès`)
+            if(isNaN(amount)) return interaction.reply(`❌ veuillez mettre des chiffres`)
 
             if(!phrase){
                 interaction.channel.bulkDelete(amount).then(async message => {
                     await interaction.reply({ embeds: [embed]})
-
-                    setTimeout(async () => {
-                        await interaction.deleteReply();
-                    }, 2000)
                 })
             }else{
                 interaction.channel.bulkDelete((await interaction.channel.messages.fetch({ limit: amount})).filter(filterMSG => filterMSG.content.toLowerCase() === phrase.toLowerCase()), {
                     filterOld: true
                 }).then(async (message) => {
-                    await interaction.reply({ embeds: [embed]})
+                    await interaction.reply(`${amount} messages ont été supprimer correctement !`)
 
                     
                     setTimeout(async () => {
@@ -51,7 +52,7 @@ module.exports = {
             }
 
         } catch (error) {
-            console.log(`❌ une erreur c'est produite sur la commande clear`, error)
-            return interaction.reply({content: '❌ Une erreur c\'est produite', ephemeral: true})        }
+            console.log(`❌ une erreur s'est produite sur la commande clear`, error)
+            return interaction.reply({content: '❌ Une erreur s\'est produite produite', ephemeral: true})        }
       } 
     }

@@ -1,12 +1,13 @@
-const { EmbedBuilder } = require("discord.js")
-
 const Discord = require('discord.js')
-const intents = new Discord.IntentsBitField(3276799)
-const bot = new Discord.Client({intents})
+const { QuickDB } = require('quick.db');
+const db = new QuickDB();
+const config = require('../config.json')
+const color = config.color
+
 
 module.exports = {
 
-    name: "user_info",
+    name: "userinfo",
     description: "donne les info sur un membre",
     permission: "Aucune",
     category: "Utilitaires",
@@ -20,7 +21,7 @@ module.exports = {
         }
     ],
 
-    async run(bot, interaction, message, args) {
+    async run(bot, interaction) {
 
         try {
 
@@ -29,7 +30,7 @@ module.exports = {
             const name = member.username
 
             const embed = new EmbedBuilder()
-                .setColor('Yellow')
+                .setColor(color)
                 .setTitle('**__USER INFO__**')
                 .setDescription('voici les info du membre')
                 .setAuthor({ name: `${name}`, iconURL: URL})
@@ -40,7 +41,7 @@ module.exports = {
 
             interaction.reply({ embeds: [embed]});
         } catch (error) {
-            console.log(`❌ une erreur c'est produite sur la commande userinfo`, error)
-            return interaction.reply({content: '❌ Une erreur c\'est produite', ephemeral: true})        }
+            console.log(`❌ une erreur s'est produite sur la commande userinfo`, error)
+            return interaction.reply({content: '❌ Une erreur s\'est produite produite', ephemeral: true})}
     }
 }

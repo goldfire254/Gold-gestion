@@ -1,6 +1,8 @@
-const { EmbedBuilder } = require("discord.js")
 const Discord = require('discord.js')
-const config = require("../config.json")
+const { QuickDB } = require('quick.db');
+const db = new QuickDB();
+const config = require('../config.json')
+const color = config.color
 
 module.exports = {
     name: 'calin',
@@ -31,13 +33,13 @@ module.exports = {
             const embed = new EmbedBuilder()
             .setDescription(`**${interaction.user.username} fait un câlin à ${target}**`)
             .setImage(calin[Math.floor(Math.random() * calin.length)])
-            .setColor('Yellow')
+            .setColor(color)
             interaction.reply({embeds: [embed]})
             
         
     } catch(error) {
-        console.log(`❌ une erreur c'est produite sur la commande calin`, error)
-        return interaction.reply({content: '❌ Une erreur c\'est produite', ephemeral: true})
+        console.log(`❌ une erreur s'est produite sur la commande calin`, error)
+        return interaction.reply({content: '❌ Une erreur s\'est produite produite', ephemeral: true})
     }
       }
     }

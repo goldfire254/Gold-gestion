@@ -1,4 +1,8 @@
 const Discord = require('discord.js')
+const { QuickDB } = require('quick.db');
+const db = new QuickDB();
+const config = require('../config.json')
+const color = config.color
 
 module.exports = {
 
@@ -16,7 +20,7 @@ module.exports = {
         }
     ],
 
-    async run(bot, interaction, message, args) {
+    async run(bot, interaction) {
 
         try {
 
@@ -25,13 +29,13 @@ module.exports = {
             const name = member.username
 
             const embed = new Discord.EmbedBuilder()
-                .setColor('Yellow')
+                .setColor(color)
                 .setAuthor({ name: `${name}`, iconURL: URL})
                 .setImage(URL)
 
             interaction.reply({ embeds: [embed]});
         } catch (error) {
-            console.log(`❌ une erreur c'est produite sur la commande pic`, error)
-            return interaction.reply({content: '❌ Une erreur c\'est produite', ephemeral: true})        }
+            console.log(`❌ une erreur s'est produite sur la commande pic`, error)
+            return interaction.reply({content: '❌ Une erreur s\'est produite produite', ephemeral: true})        }
     }
 }

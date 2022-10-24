@@ -1,11 +1,16 @@
 const Discord = require('discord.js')
+const { QuickDB } = require('quick.db');
+const db = new QuickDB();
+const config = require('../config.json')
+const color = config.color
+
 
 module.exports = {
 
     name: "8ball",
     description: "Pose moi une question",
     permission: "Aucune",
-    category: "Fun",
+    dm: true,
     options: [
         {
             type: "string",
@@ -41,12 +46,12 @@ module.exports = {
 
                 📤 **Ma réponse :**
                 > \`${questionArray[Math.floor(Math.random() * questionArray.length)]}\``)
-                .setColor('Yellow')
+                .setColor(color)
 
             await interaction.reply({embeds: [embed]})
         } catch (error) {
-            console.log(`❌ une erreur c'est produite sur la commande 8ball`, error)
-            return interaction.reply({content: '❌ Une erreur c\'est produite', ephemeral: true})
+            console.log(`❌ une erreur s'est produite sur la commande 8ball`, error)
+            return interaction.reply({content: '❌ Une erreur s\'est produite produite', ephemeral: true})
         }
     }
 }

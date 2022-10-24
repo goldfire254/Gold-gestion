@@ -1,4 +1,8 @@
 const Discord = require('discord.js')
+const { QuickDB } = require('quick.db');
+const db = new QuickDB();
+const config = require('../config.json')
+const color = config.color
 
 module.exports = {
 
@@ -21,7 +25,7 @@ module.exports = {
         }
     ],
 
-    async run(bot, interaction, message, args) {
+    async run(bot, interaction) {
 
         if(!interaction.member.permissions.has(Discord.PermissionsBitField.resolve("Administrator"))) return interaction.reply("vous n'avez pas les permissions d'effectuer la commandes");
         if(!interaction.guild.members.me.permissions.has(Discord.PermissionsBitField.resolve("Administrator"))) return interaction.reply("vous n'avez pas les permissions d'effectuer la commandes");
@@ -30,13 +34,16 @@ module.exports = {
 
             let member = interaction.options.getMember("membre");
             let role = interaction.options.getRole("role");
+            const embed = new Discord.EmbedBuilder()
+            .setColor(color)
+            .setDescription(`✅ le role ${role} a été retiré de ${member} avec succès`)
 
             await member.roles.remove(role);
-            await interaction.reply(`le rôle ${role} a bien été retiré de ${member}`)
+            await interaction.reply({embeds: [embed]})
 
 
         } catch (error) {
-            console.log(`❌ une erreur c'est produite sur la commande removerole`, error)
-            return interaction.reply({content: '❌ Une erreur c\'est produite', ephemeral: true})        }
+            console.log(`❌ une erreur s'est produite sur la commande removerole`, error)
+            return interaction.reply({content: '❌ Une erreur s\'est produite produite', ephemeral: true})        }
     }
 }

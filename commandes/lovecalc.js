@@ -1,5 +1,8 @@
-const Discord = require('discord.js');
-const { EmbedBuilder } = require('discord.js');
+const Discord = require('discord.js')
+const { QuickDB } = require('quick.db');
+const db = new QuickDB();
+const config = require('../config.json')
+const color = config.color
  
 module.exports = {
     name: "lovecalc",
@@ -44,7 +47,7 @@ module.exports = {
         
             const embed = new EmbedBuilder()
                 .setTitle(`💞 **__${membre.username}__ ${random}% __${member.username}__** 💞`)
-                .setColor("Yellow")
+                .setColor(color)
                 .setDescription(`Voilà ton le pourcentage d'amour entre **${membre.username}** et **${member.username}**`)
                 .setTimestamp()
                 .setImage(lovecalc[Math.floor(Math.random() * lovecalc.length)])
@@ -52,8 +55,8 @@ module.exports = {
         
             await interaction.reply({ embeds: [embed] })
         } catch (error) {
-            console.log(`❌ une erreur c'est produite sur la commande lovecalc`, error)
-            return interaction.reply({content: '❌ Une erreur c\'est produite', ephemeral: true})
+            console.log(`❌ une erreur s'est produite sur la commande lovecalc`, error)
+            return interaction.reply({content: '❌ Une erreur s\'est produite produite', ephemeral: true})
         }
     }
  
